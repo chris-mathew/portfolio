@@ -168,7 +168,7 @@
 
 <!-- First section with full-screen background and typing effect -->
 <div class="background-container">
-  <video autoplay muted loop class="background-video">
+  <video autoplay muted loop playsinline class="background-video">
     <source src="background-video.mp4" type="video/mp4" />
     <!-- Include additional formats for compatibility, if needed -->
   </video>

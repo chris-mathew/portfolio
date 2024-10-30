@@ -132,6 +132,7 @@
     color: #c5c5c5;
     font-weight: bold;
     padding: 5px 15px;
+    font-size: 1vw;
     transition: color 0.3s ease, background-color 0.3s ease;
   }
 

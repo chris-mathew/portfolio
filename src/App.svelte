@@ -260,6 +260,182 @@
 }
 
 
+
+/* About Section Layout */
+
+
+.about {
+  display: flex;
+  flex-direction: column;
+  gap: 5vh; /* Gap between text and boxes */
+  padding: 40px;
+  text-align: left;
+  align-items: center;
+  width: 100%; /* Ensures it doesn’t exceed the viewport width */
+  box-sizing: border-box; /* Includes padding in the width */
+  overflow-x: hidden; /* Hides any overflow in the horizontal direction */
+}
+.about-text {
+  max-width: 60%; /* Controls the width of the text container */
+  text-align: center;
+}
+
+.about-text h2 {
+  font-size: 2vw;
+  color: #ffcc00;
+  margin-bottom: 20px;
+}
+
+.about-text p {
+  font-size: 1vw;
+  line-height: 1.6;
+  color: #c5c5c5;
+}
+
+/* Horizontally aligned boxes */
+.about {
+  display: flex;
+  flex-direction: column;
+  gap: 5vh; /* Gap between text and boxes */
+  padding: 40px;
+  text-align: left;
+  align-items: center;
+}
+
+.about-boxes {
+  display: flex;
+  gap: 5vw; /* Space between the boxes */
+  justify-content: center;
+  width: 100%;
+}
+
+.about-boxes .box {
+  width: 25vw; /* Fixed width for consistent sizing */
+  background-color: #1a1a2e;
+  height: 40vh;
+  color: #bcbcbc;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+  aspect-ratio: 1; /* Maintains square aspect ratio */
+}
+
+.about-boxes .box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.about-boxes .box h3 {
+  margin-top: 0;
+  font-size: 1.5vw;
+  color: #ffcc00;
+}
+
+.about-boxes .box ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.about-boxes .box ul li {
+  font-size: 1vw;
+  margin-bottom: 5px;
+}
+
+
+/* Education Section Layout */
+.education-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.education-section h3 {
+  font-size: 1.8vw;
+  color: #ffcc00;
+  margin-bottom: 2vh;
+  text-align: center;
+}
+
+/* Center Education Entries */
+.education-entry {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center the content horizontally */
+  gap: 20px;
+  padding: 10px 0;
+  width: 100%; /* Ensure it takes the full width of the box */
+}
+
+/* Logo and Text Centering */
+.education-logo {
+  width: 50px; /* Adjust logo size as needed */
+  height: auto;
+  flex-shrink: 0;
+}
+
+.education-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center-align text inside each entry */
+}
+
+.education-details h4 {
+  font-size: 1.3vw;
+  color: #ffffff;
+  margin: 0;
+  text-align: center;
+}
+
+.education-details p {
+  font-size: 1vw;
+  color: #c5c5c5;
+  margin: 3px 0;
+  text-align: center;
+}
+
+.education-year {
+  font-style: italic;
+  color: #a5a5a5;
+  text-align: center;
+}
+
+
+
+/* Center and style the Skills heading */
+.skills-section h3 {
+  font-size: 1.5vw;
+  color: #ffcc00;
+  text-align: center;
+  margin-bottom: 6vh; /* Reduce vertical padding */
+}
+
+/* Style for subsections within the Skills box */
+.skills-subsection {
+  width: 100%; /* Full width for consistency */
+  text-align: left; /* Align subsections to the left */
+}
+
+.skills-subsection h4 {
+  font-size: 1.2vw;
+  color: #ffffff;
+  margin-bottom: 1vh; /* Reduce padding between heading and content */
+}
+
+.skills-subsection p {
+  font-size: 1vw;
+  color: #c5c5c5;
+  margin: 0;
+  line-height: 1.5;
+}
+
+
+
+
+
   @media (max-width: 1024px) {
     .box {
       width: calc(33.33% - 20px);
@@ -305,26 +481,53 @@
 
 <!-- Second section with boxes for skills, projects, interests, and contact -->
 <div id="about" class="about">
-  <div class="box-container">
-    <div class="box">
+  <div class="about-text">
+    <h2>About Me</h2>
+    <p>
+      I am a Biomedical Engineer and Data Engineer passionate about advancing technology and applying data science to real-world problems. I have experience in machine learning, data analysis, and various engineering projects, always aiming to make impactful contributions.
+    </p>
+  </div>
+
+  <!-- Education Section with Title and Entries -->
+  <div class="about-boxes">
+    <div class="box education-section">
       <h3>Education</h3>
-      <ul>
-        <li>Project A</li>
-        <li>Project B</li>
-        <li>Project C</li>
-      </ul>
+      <!-- First University Entry -->
+      <div class="education-entry">
+        <img src="imperial.png" alt="University Logo" class="education-logo" />
+        <div class="education-details">
+          <h4>MSc Biomedical Engineering</h4>
+          <p>Imperial College London</p>
+          <p class="education-year">2023 - 2024</p>
+        </div>
+      </div>
+      <!-- Second University Entry -->
+      <div class="education-entry">
+        <img src="birmingham.png" alt="University Logo" class="education-logo" />
+        <div class="education-details">
+          <h4>BEng Mechanical Engineering</h4>
+          <p>University of Birmingham</p>
+          <p class="education-year">2020 - 2023</p>
+        </div>
+      </div>
     </div>
-    <div class="box">
-      <h3>Interests</h3>
-      <ul>
-        <li>AI Research</li>
-        <li>Biomedical Engineering</li>
-        <li>Data Visualization</li>
-      </ul>
-    </div>
-    
+
+    <!-- Skills Section with Subsections -->
+<div class="box skills-section">
+  <h3>Skills</h3>
+  <div class="skills-subsection">
+    <h4>Languages/Frameworks:</h4>
+    <p>Python, MATLAB, Java, C, SQL, Verilog, CUDA, Git, PyTorch, Pandas, SolidWorks, OpenGL</p>
+  </div>
+  <div class="skills-subsection">
+    <h4>Areas:</h4>
+    <p>Deep Learning, GNN, Databases, Agile, GitHub, Azure, API, Office, Object-oriented Programming, CAD, CFD, FEA</p>
   </div>
 </div>
+
+  </div>
+</div>
+
 
 <!-- Third section as placeholder -->
 <div id="skills" class="skills">

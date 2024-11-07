@@ -585,7 +585,7 @@
   top: 10px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 1.2em;
+  font-size: 2.5vw;
   font-weight: bold;
   color: #ffcc00;
   z-index: 2;
@@ -765,7 +765,7 @@
   
     <div class="project-box">
       <div class="project-banner" style="background-image: url('untitled.png');"></div>
-      <h3 class="project-title">Project 2</h3> <!-- Another title outside the banner -->
+      <h3 class="project-title">Maglev Based</h3> <!-- Another title outside the banner -->
       <p class="project-description">Description for Project 2.</p>
       <a href="https://github.com/example2" target="_blank" class="github-link">View on GitHub</a>
     </div>

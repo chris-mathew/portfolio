@@ -139,7 +139,7 @@
     border-radius: 20px;
   }
 
-  .about, .skills, .experience, .projects, .contact {
+  .about, .experience, .projects, .contact {
     background-color: #040e1b;
     color: white;
     height: 100vh;
@@ -152,11 +152,25 @@
     position: absolute;
     left: 0;
   }
+
+  .projects {
+    background-color: #040e1b;
+    color: white;
+    height: 125vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+    z-index: 1;
+    position: absolute;
+    left: 0;
+  }
+
   .about { top: 100%; }
-  .skills { top: 200%; }
-  .experience { top: 300%; }
-  .projects { top: 400%; }
-  .contact { top: 500%; }
+  .experience { top: 200%; }
+  .projects { top: 300%; }
+  .contact { top: 425%; }
 
   /* Box container and individual box styles for second section */
   .box-container {
@@ -433,6 +447,176 @@
 }
 
 
+/* Centered Experience Section */
+.experience {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 0; /* Vertical padding */
+  text-align: center;
+  overflow-x: hidden; /* Prevent horizontal overflow */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Experience Title Styling */
+.experience-title {
+  margin-bottom: 20px;
+}
+
+.experience-title h2 {
+  font-size: 2vw;
+  color: #ffcc00;
+  margin: 0;
+}
+
+/* Centered Experience Boxes */
+.experience-boxes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 80vw; /* Restrict max width to prevent overflow */
+}
+
+.experience-box {
+  background-color: #1a1a2e;
+  color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%; /* Responsive width */
+  max-width: 700px; /* Control max width for larger screens */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.experience-box h3 {
+  font-size: 1.5vw;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+.experience-box p {
+  font-size: 1vw;
+  margin: 5px 0;
+}
+
+/* Experience List Styling */
+.experience-box ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  text-align: left; /* Left-aligns the list items */
+  width: 90%; /* Ensures alignment within the box */
+}
+
+.experience-box ul li {
+  font-size: 0.9vw;
+  margin-bottom: 5px;
+  color: #c5c5c5;
+}
+
+.experience-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+
+
+
+.projects {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 0; /* Adjusts top and bottom padding */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Project Container and Box Styling */
+.project-container {
+  display: grid;
+  gap: 30px; /* Space between project boxes */
+  grid-template-columns: repeat(3, 1fr); /* Ensures only 3 boxes per row */
+  width: 90%;
+  max-width: 1200px;
+}
+
+.project-box {
+  position: relative;
+  background-color: #1a1a2e;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Blurred background banner */
+.project-banner {
+  width: 100%;
+  height: 25vh;
+  background-size: cover;
+  background-position: center;
+  border-radius: 10px 10px 0 0;
+  filter: blur(3px);
+  transition: filter 0.3s ease;
+}
+
+.project-box:hover .project-banner {
+  filter: blur(0);
+}
+
+/* Overlay title */
+.project-title {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #ffcc00;
+  z-index: 2;
+}
+
+/* Rest of the project content */
+.project-description {
+  font-size: 1vw;
+  color: #c5c5c5;
+  margin: 15px 0;
+  text-align: center;
+}
+
+.github-link {
+  color: #ffcc00;
+  background-color: #333;
+  padding: 8px 16px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 0.9vw;
+  transition: background-color 0.3s;
+}
+
+.github-link:hover {
+  background-color: #ffcc00;
+  color: #333;
+}
+
+
+
 
 
 
@@ -459,7 +643,7 @@
 <div class="nav-bar">
   <a href="#content">Home</a>
   <a href="#about">About</a>
-  <a href="#skills">Experience</a>
+  <a href="#experience">Experience</a>
   <a href="#projects">Projects</a>
   <a href="#contact">Contact</a>
 </div>
@@ -530,17 +714,91 @@
 
 
 <!-- Third section as placeholder -->
-<div id="skills" class="skills">
-  Skills
-</div>
 
 <div id="experience" class="experience">
-  experience
+  <!-- Experience Title -->
+  <div class="experience-title">
+    <h2>Experience</h2>
+  </div>
+
+  <!-- Centered Experience Boxes -->
+  <div class="experience-boxes">
+    <div class="experience-box">
+      <h3>Data Engineer Intern</h3>
+      <p>ROSEN | July 2022 - Sept 2022</p>
+      <ul>
+        <li>• Worked in the world’s leading inspection engineering provider for the energy sector</li>
+        <li>•	Created a Power BI dashboard for C-suite clients using processed data and GIS</li>
+        <li>•	Built a data management portal for Data Scientists and Engineers</li>
+        <li>•	Constructed data and ETL pipelines to automate the flow and analysis of data, saving an engineer up to a month in data processing</li>
+        <li>•	Incorporated materialized views to boost processing speeds by 40 times</li>
+        <li>•	Programmed an API for Data Scientists to automate SQL tasks, increasing efficiency</li>
+      </ul>
+    </div>
+    <div class="experience-box">
+      <h3>YMB Board Member</h3>
+      <p>Institution of Mechanical Engineers | July 2024 - Present</p>
+      <ul>
+        <li>•	Served on the Young Members Board of the world's largest mechanical engineering institution of 115k members</li>
+        <li>•	Represented the Safety and Reliability Engineering Division on the board</li>
+      </ul>
+    </div>
+  </div>
 </div>
 
+
+
+
+
 <div id="projects" class="projects">
-  projects
+  <div class="experience-title">
+    <h2>Projects</h2>
+  </div>
+  
+  <div class="project-container">
+    <div class="project-box">
+      <div class="project-banner" style="background-image: url('untitled.png');"></div>
+      <h3 class="project-title">Project 1</h3> <!-- Title outside the banner for overlay effect -->
+      <p class="project-description">Description for Project 1.</p>
+      <a href="https://github.com/example1" target="_blank" class="github-link">View on GitHub</a>
+    </div>
+  
+    <div class="project-box">
+      <div class="project-banner" style="background-image: url('untitled.png');"></div>
+      <h3 class="project-title">Project 2</h3> <!-- Another title outside the banner -->
+      <p class="project-description">Description for Project 2.</p>
+      <a href="https://github.com/example2" target="_blank" class="github-link">View on GitHub</a>
+    </div>
+
+    <div class="project-box">
+      <div class="project-banner" style="background-image: url('untitled.png');"></div>
+      <h3 class="project-title">Project 1</h3> <!-- Title outside the banner for overlay effect -->
+      <p class="project-description">Description for Project 1.</p>
+      <a href="https://github.com/example1" target="_blank" class="github-link">View on GitHub</a>
+    </div>
+
+    <div class="project-box">
+      <div class="project-banner" style="background-image: url('untitled.png');"></div>
+      <h3 class="project-title">Project 1</h3> <!-- Title outside the banner for overlay effect -->
+      <p class="project-description">Description for Project 1.</p>
+      <a href="https://github.com/example1" target="_blank" class="github-link">View on GitHub</a>
+    </div>
+
+    <div class="project-box">
+      <div class="project-banner" style="background-image: url('untitled.png');"></div>
+      <h3 class="project-title">Project 1</h3> <!-- Title outside the banner for overlay effect -->
+      <p class="project-description">Description for Project 1.</p>
+      <a href="https://github.com/example1" target="_blank" class="github-link">View on GitHub</a>
+    </div>
+  
+    <!-- Add more project-boxes with unique images -->
+  </div>
 </div>
+
+
+
+
+
 
 <div id="contact" class="contact">
   <div class="contact-header">
@@ -573,7 +831,3 @@
     </a>
   </div>
 </div>
-
-
-
-  

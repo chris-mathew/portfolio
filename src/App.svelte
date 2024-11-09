@@ -45,6 +45,19 @@
   function closePopup() {
     showPopup = false;
   }
+
+  let isIOSDevice = false;
+
+  // Function to detect if the device is iOS
+  function detectIOS() {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    return /iPad|iPhone|iPod/.test(userAgent) && typeof window.MSStream === 'undefined';
+  }
+
+  // Run on mount to check for iOS
+  onMount(() => {
+    isIOSDevice = detectIOS();
+  });
 </script>
 
 
@@ -75,6 +88,12 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  .background-image {
+    background-image: url('your-image.jpg'); /* Provide the fallback image URL */
+    width: 100%;
+    height: 100%;
   }
 
   .content {
@@ -650,7 +669,7 @@
     top: 20%;
     left: 50%;
     transform: translate(-50%, -20%);
-    background: #fff;
+    background: #252835;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     z-index: 1000;
@@ -663,13 +682,13 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: #ffcc00;
     z-index: 999;
   }
 
   .close-button {
-    background: #333;
-    color: #fff;
+    background: #1a1a2e;
+    color: #ffcc00;
     border: none;
     padding: 5px 10px;
     border-radius: 5px;
@@ -714,9 +733,9 @@
 {#if showPopup}
   <div class="popup-overlay" on:click={closePopup}></div>
   <div class="popup">
-    <h2>Notice for iOS Users</h2>
-    <p>This feature is optimized for iOS devices!</p>
-    <button class="close-button" on:click={closePopup}>Close</button>
+    <h2>Note:</h2>
+    <p>TThis website is not optimized for mobile devices!</p>
+    <button class="close-button" on:click={closePopup}>Ok</button>
   </div>
 {/if}
 
@@ -732,9 +751,15 @@
 
 <!-- First section with full-screen background and typing effect -->
 <div class="background-container">
-  <video autoplay muted loop playsinline class="background-video">
-    <source src="background-video.mp4" type="video/mp4" />
-  </video>
+  {#if isIOSDevice}
+    <!-- Show image on iOS devices -->
+    <div class="background-image"></div>
+  {:else}
+    <!-- Show video on other devices -->
+    <video autoplay muted loop playsinline class="background-video">
+      <source src="background-video.mp4" type="video/mp4" />
+    </video>
+  {/if}
 </div>
 
 <div id="content" class="content">

@@ -24,6 +24,27 @@
   });
 
   
+
+  
+  let showPopup = false;
+
+  // Function to check if the device is iOS
+  function isIOS() {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    return /iPad|iPhone|iPod/.test(userAgent) && typeof window.MSStream === 'undefined';
+  }
+
+  // Run on mount
+  onMount(() => {
+    if (isIOS()) {
+      showPopup = true;
+    }
+  });
+
+  // Function to close the popup
+  function closePopup() {
+    showPopup = false;
+  }
 </script>
 
 
@@ -624,7 +645,36 @@
 }
 
 
+.popup {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -20%);
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    border-radius: 8px;
+  }
+  
+  .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+  }
 
+  .close-button {
+    background: #333;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
 
 
 
@@ -659,6 +709,17 @@
 }
   
 </style>
+
+
+{#if showPopup}
+  <div class="popup-overlay" on:click={closePopup}></div>
+  <div class="popup">
+    <h2>Notice for iOS Users</h2>
+    <p>This feature is optimized for iOS devices!</p>
+    <button class="close-button" on:click={closePopup}>Close</button>
+  </div>
+{/if}
+
 
 <!-- Capsule Navigation Bar -->
 <div class="nav-bar">

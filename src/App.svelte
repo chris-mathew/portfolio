@@ -585,7 +585,7 @@
   top: 10px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 2.5vw;
+  font-size: 1.5vw;
   font-weight: bold;
   color: #ffcc00;
   z-index: 2;
@@ -757,38 +757,37 @@
   
   <div class="project-container">
     <div class="project-box">
-      <div class="project-banner" style="background-image: url('untitled.png');"></div>
-      <h3 class="project-title">Project 1</h3> <!-- Title outside the banner for overlay effect -->
-      <p class="project-description">Description for Project 1.</p>
-      <a href="https://github.com/example1" target="_blank" class="github-link">View on GitHub</a>
-    </div>
-  
-    <div class="project-box">
-      <div class="project-banner" style="background-image: url('untitled.png');"></div>
-      <h3 class="project-title">Maglev Based</h3> <!-- Another title outside the banner -->
-      <p class="project-description">Description for Project 2.</p>
-      <a href="https://github.com/example2" target="_blank" class="github-link">View on GitHub</a>
+      <div class="project-banner" style="background-image: url('Brain.png');"></div>
+      <h3 class="project-title">Deep Learning for Brain Age Prediction</h3> <!-- Title outside the banner for overlay effect -->
+      <p class="project-description">This project investigates using Graph Neural Networks (GNNs) combined with MRI data to improve brain age prediction.</p>
+      <a href="https://msc-project.chris-mathew.com/" target="_blank" class="github-link">Demo</a>
     </div>
 
     <div class="project-box">
-      <div class="project-banner" style="background-image: url('untitled.png');"></div>
-      <h3 class="project-title">Project 1</h3> <!-- Title outside the banner for overlay effect -->
-      <p class="project-description">Description for Project 1.</p>
-      <a href="https://github.com/example1" target="_blank" class="github-link">View on GitHub</a>
+      <div class="project-banner" style="background-image: url('Poster.PNG');"></div>
+      <h3 class="project-title">Toolkit for Electron Spin Resonance</h3> <!-- Title outside the banner for overlay effect -->
+      <p class="project-description">This project involves creating a model to simulate coherence time in quantum computing, using quantum-specific materials that support stable qubit superposition.</p>
     </div>
 
     <div class="project-box">
-      <div class="project-banner" style="background-image: url('untitled.png');"></div>
-      <h3 class="project-title">Project 1</h3> <!-- Title outside the banner for overlay effect -->
-      <p class="project-description">Description for Project 1.</p>
-      <a href="https://github.com/example1" target="_blank" class="github-link">View on GitHub</a>
+      <div class="project-banner" style="background-image: url('Train.png');"></div>
+      <h3 class="project-title">Maglev-Based Railway Track Switch</h3> <!-- Another title outside the banner -->
+      <p class="project-description">A mathematical model and simulation of a novel Maglev track-switch to enhance stability and efficiency.</p>
+      
     </div>
 
     <div class="project-box">
-      <div class="project-banner" style="background-image: url('untitled.png');"></div>
-      <h3 class="project-title">Project 1</h3> <!-- Title outside the banner for overlay effect -->
-      <p class="project-description">Description for Project 1.</p>
-      <a href="https://github.com/example1" target="_blank" class="github-link">View on GitHub</a>
+      <div class="project-banner" style="background-image: url('Breast.png');"></div>
+      <h3 class="project-title">AI Breast Cancer Screening System</h3> <!-- Title outside the banner for overlay effect -->
+      <p class="project-description">Developed an AI model using DenseNet, Streamlit, and SQL to classify breast cancer images into BI-RADS categories, achieving over 70% accuracy.</p>
+      <a href="https://github.com/chris-mathew/Breast_Cancer_Masking" target="_blank" class="github-link">View on GitHub</a>
+    </div>
+
+    <div class="project-box">
+      <div class="project-banner" style="background-image: url('Neural.png');"></div>
+      <h3 class="project-title">ML algorithm for a Brain-machine Interface</h3> <!-- Title outside the banner for overlay effect -->
+      <p class="project-description">Developed a MATLAB algorithm predicting hand position from neural activity, achieving a top-5 RMSE score of 13 in competition.</p>
+      <a href="https://github.com/chris-mathew/BMI_Project" target="_blank" class="github-link">View on GitHub</a>
     </div>
   
     <!-- Add more project-boxes with unique images -->

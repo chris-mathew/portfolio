@@ -18,7 +18,15 @@
   onMount(() => {
     typeEffect();
   });
+
+  onMount(() => {
+    document.title = "Chris's Portfolio";
+  });
+
+  
 </script>
+
+
 
 <style>
   body, html {
@@ -637,6 +645,19 @@
       width: 100%;
     }
   }
+
+  @media screen and (max-device-width: 768px) and (-webkit-min-device-pixel-ratio: 2) {
+    .background-video {
+        display: none;
+    }
+    .background-container {
+        background-image: url('untitled.png');
+        /* Ensure the static image matches the video */
+        background-size: cover;
+        background-position: center;
+    }
+}
+  
 </style>
 
 <!-- Capsule Navigation Bar -->

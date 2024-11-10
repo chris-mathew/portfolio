@@ -22,6 +22,42 @@
   onMount(() => {
     document.title = "Chris's Portfolio";
   });
+
+  
+
+  
+  let showPopup = false;
+
+  // Function to check if the device is iOS
+  function isIOS() {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    return /iPad|iPhone|iPod/.test(userAgent) && typeof window.MSStream === 'undefined';
+  }
+
+  // Run on mount
+  onMount(() => {
+    if (isIOS()) {
+      showPopup = true;
+    }
+  });
+
+  // Function to close the popup
+  function closePopup() {
+    showPopup = false;
+  }
+
+  let isIOSDevice = false;
+
+  // Function to detect if the device is iOS
+  function detectIOS() {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    return /iPad|iPhone|iPod/.test(userAgent) && typeof window.MSStream === 'undefined';
+  }
+
+  // Run on mount to check for iOS
+  onMount(() => {
+    isIOSDevice = detectIOS();
+  });
 </script>
 
 
@@ -52,6 +88,12 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  .background-image {
+    background-image: url('your-image.jpg'); /* Provide the fallback image URL */
+    width: 100%;
+    height: 100%;
   }
 
   .content {
@@ -622,7 +664,36 @@
 }
 
 
+.popup {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -20%);
+    background: #252835;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    border-radius: 8px;
+  }
+  
+  .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #ffcc00;
+    z-index: 999;
+  }
 
+  .close-button {
+    background: #1a1a2e;
+    color: #ffcc00;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
 
 
 
@@ -644,19 +715,20 @@
     }
   }
 
-  @media screen and (max-device-width: 768px) and (-webkit-min-device-pixel-ratio: 2) {
-    .background-video {
-        display: none;
-    }
-    .background-container {
-        background-image: url('untitled.png');
-        /* Ensure the static image matches the video */
-        background-size: cover;
-        background-position: center;
-    }
-}
+
   
 </style>
+
+
+{#if showPopup}
+  <div class="popup-overlay" on:click={closePopup}></div>
+  <div class="popup">
+    <h2>Note:</h2>
+    <p>TThis website is not optimized for mobile devices!</p>
+    <button class="close-button" on:click={closePopup}>Ok</button>
+  </div>
+{/if}
+
 
 <!-- Capsule Navigation Bar -->
 <div class="nav-bar">
@@ -669,9 +741,15 @@
 
 <!-- First section with full-screen background and typing effect -->
 <div class="background-container">
-  <video autoplay muted loop playsinline class="background-video">
-    <source src="background-video.mp4" type="video/mp4" />
-  </video>
+  {#if isIOSDevice}
+    <!-- Show image on iOS devices -->
+    <div class="background-image"></div>
+  {:else}
+    <!-- Show video on other devices -->
+    <video autoplay muted loop playsinline class="background-video">
+      <source src="background-video.mp4" type="video/mp4" />
+    </video>
+  {/if}
 </div>
 
 <div id="content" class="content">

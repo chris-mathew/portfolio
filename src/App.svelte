@@ -713,7 +713,7 @@
   </div>
   <div class="skills-subsection">
     <h4>Areas:</h4>
-    <p>Deep Learning, GNN, Databases, Agile, GitHub, Azure, API, Office, Object-oriented Programming, CAD, CFD, FEA</p>
+    <p>AI, Machine Learning, Data Analytics, Data Science, Deep Learning, Databases, Agile, GitHub, Azure, API, Office, Object-oriented Programming</p>
   </div>
 </div>
 

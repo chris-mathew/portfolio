@@ -768,7 +768,7 @@
       <div class="project-banner" style="background-image: url('Brain.png');"></div>
       <h3 class="project-title">Deep Learning for Brain Age Prediction</h3> <!-- Title outside the banner for overlay effect -->
       <p class="project-description">This project investigates using Graph Neural Networks (GNNs) combined with MRI data to improve brain age prediction.</p>
-      <a href="https://msc-project.chris-mathew.com/" target="_blank" class="github-link">Demo</a>
+     <!--  <a href="https://msc-project.chris-mathew.com/" target="_blank" class="github-link">Demo</a> -->
     </div>
 
     <div class="project-box">

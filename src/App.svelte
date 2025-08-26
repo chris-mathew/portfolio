@@ -516,7 +516,7 @@
 
     <h2>Projects</h2>
     <ul>
-      <li>Deep Learning for Brain Age Prediction — Demo: <a href="https://msc-project.chris-mathew.com/" target="_blank">msc-project.chris-mathew.com</a></li>
+      <li>Deep Learning for Brain Age Prediction</li>
       <li>Toolkit for Electron Spin Resonance</li>
       <li>Maglev-Based Railway Track Switch</li>
       <li>AI Breast Cancer Screening System — <a href="https://github.com/chris-mathew/Breast_Cancer_Masking" target="_blank">GitHub</a></li>

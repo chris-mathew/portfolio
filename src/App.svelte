@@ -51,6 +51,9 @@
   $: if (showFull && displayedText.length === 0) {
     typeEffect();
   }
+
+  onMount(() => document.querySelector('video')?.play().catch(()=>{}));
+
 </script>
 
 <style>

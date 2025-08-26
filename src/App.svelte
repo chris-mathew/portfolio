@@ -12,6 +12,10 @@
   let showFull = true;         // true = show your original rich version
   let mobileNotice = "";
 
+  // --- new: background video refs/state ---
+  let bgVideo;
+  let videoVisible = false; // only show video once it's actually playing
+
   async function typeEffect() {
     for (let i = 0; i < text.length; i++) {
       displayedText += text[i];
@@ -33,6 +37,69 @@
       : "For the best experience, please use a desktop or rotate your device to landscape.";
   }
 
+  // ---- autoplay helper: wait until we get a real 'playing' event ----
+  function waitForPlayingOnce(videoEl) {
+    return new Promise((resolve) => {
+      const handler = () => {
+        videoEl.removeEventListener('playing', handler);
+        resolve();
+      };
+      videoEl.addEventListener('playing', handler, { once: true });
+    });
+  }
+
+  // ---- attempt to start playback; only reveal when actually playing ----
+  async function kickAutoplay() {
+    if (!bgVideo) return;
+
+    // iOS needs both attribute and property variants
+    bgVideo.muted = true;
+    bgVideo.setAttribute('muted', '');
+    bgVideo.playsInline = true;
+    bgVideo.setAttribute('playsinline', '');
+    bgVideo.setAttribute('webkit-playsinline', '');
+
+    try {
+      const playingPromise = waitForPlayingOnce(bgVideo);
+      const playPromise = bgVideo.play();
+      if (playPromise) {
+        await playPromise.catch(() => {}); // ignore "autoplay prevented" errors
+      }
+      await playingPromise; // only show once actually playing
+      videoVisible = true;
+    } catch {
+      videoVisible = false;
+    }
+  }
+
+  function attachAutoplayRetries() {
+    const retry = () => {
+      // Hide and re-attempt when conditions change (rotation/resize/tab visible)
+      videoVisible = false;
+      kickAutoplay();
+    };
+
+    window.addEventListener('orientationchange', retry);
+    window.addEventListener('resize', retry);
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) retry(); });
+
+    // First user gesture (covers strict devices/Low Power Mode)
+    const onFirstTouch = () => {
+      retry();
+      window.removeEventListener('touchstart', onFirstTouch, { passive: true });
+      window.removeEventListener('click', onFirstTouch, true);
+    };
+    window.addEventListener('touchstart', onFirstTouch, { passive: true });
+    window.addEventListener('click', onFirstTouch, true);
+
+    return () => {
+      window.removeEventListener('orientationchange', retry);
+      window.removeEventListener('resize', retry);
+      window.removeEventListener('touchstart', onFirstTouch, { passive: true });
+      window.removeEventListener('click', onFirstTouch, true);
+    };
+  }
+
   onMount(() => {
     document.title = "Chris's Portfolio";
     computeFlags();
@@ -41,9 +108,13 @@
     window.addEventListener("resize", computeFlags);
     window.addEventListener("orientationchange", computeFlags);
 
+    // set up autoplay retry hooks
+    const cleanupAutoplay = attachAutoplayRetries();
+
     return () => {
       window.removeEventListener("resize", computeFlags);
       window.removeEventListener("orientationchange", computeFlags);
+      cleanupAutoplay?.();
     };
   });
 
@@ -52,8 +123,10 @@
     typeEffect();
   }
 
-  onMount(() => document.querySelector('video')?.play().catch(()=>{}));
-
+  // When the full view is (re)entered and we have a video element, try autoplay.
+  $: if (showFull && bgVideo && !videoVisible) {
+    kickAutoplay();
+  }
 </script>
 
 <style>
@@ -83,6 +156,16 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    pointer-events: none; /* prevent interactions */
+  }
+
+  /* --- new: keep video out of layout until it's playing (prevents play overlay) --- */
+  .background-video.hidden { display: none !important; }
+
+  /* iOS Safari: hide the big inline play overlay button just in case */
+  video::-webkit-media-controls-start-playback-button {
+    display: none !important;
+    -webkit-appearance: none;
   }
 
   .content {
@@ -323,7 +406,7 @@
 </style>
 
 {#if showFull}
-  <!-- === ORIGINAL FULL EXPERIENCE (unchanged) === -->
+  <!-- === ORIGINAL FULL EXPERIENCE === -->
 
   <!-- Capsule Navigation Bar -->
   <div class="nav-bar">
@@ -336,10 +419,22 @@
 
   <!-- First section with full-screen background and typing effect -->
   <div class="background-container">
-    <video autoplay muted loop playsinline webkit-playsinline preload="auto" class="background-video">
-    <source src="background-video.mp4" type="video/mp4" />
+    <video
+      bind:this={bgVideo}
+      class="background-video {videoVisible ? '' : 'hidden'}"
+      autoplay
+      muted
+      loop
+      playsinline
+      webkit-playsinline
+      preload="auto"
+      x-webkit-airplay="deny"
+      disablepictureinpicture
+      controlslist="nodownload noplaybackrate nofullscreen noremoteplayback"
+      poster="untitled.png"
+    >
+      <source src="background-video.mp4" type="video/mp4" />
     </video>
-
   </div>
 
   <div id="content" class="content">

@@ -6,13 +6,13 @@
   let displayedText = "";
   let showEnding = false;
 
-  // --- new: environment flags ---
+  // --- environment flags ---
   let isMobile = false;
   let isPortrait = false;
   let showFull = true;         // true = show your original rich version
   let mobileNotice = "";
 
-  // --- new: background video refs/state ---
+  // --- background video refs/state ---
   let bgVideo;
   let videoVisible = false; // only show video once it's actually playing
 
@@ -37,7 +37,7 @@
       : "For the best experience, please use a desktop or rotate your device to landscape.";
   }
 
-  // ---- autoplay helper: wait until we get a real 'playing' event ----
+  // wait until we get a real 'playing' event
   function waitForPlayingOnce(videoEl) {
     return new Promise((resolve) => {
       const handler = () => {
@@ -48,7 +48,7 @@
     });
   }
 
-  // ---- attempt to start playback; only reveal when actually playing ----
+  // attempt to start playback; only reveal when actually playing
   async function kickAutoplay() {
     if (!bgVideo) return;
 
@@ -62,9 +62,7 @@
     try {
       const playingPromise = waitForPlayingOnce(bgVideo);
       const playPromise = bgVideo.play();
-      if (playPromise) {
-        await playPromise.catch(() => {}); // ignore "autoplay prevented" errors
-      }
+      if (playPromise) await playPromise.catch(() => {}); // ignore autoplay errors
       await playingPromise; // only show once actually playing
       videoVisible = true;
     } catch {
@@ -74,7 +72,6 @@
 
   function attachAutoplayRetries() {
     const retry = () => {
-      // Hide and re-attempt when conditions change (rotation/resize/tab visible)
       videoVisible = false;
       kickAutoplay();
     };
@@ -108,7 +105,6 @@
     window.addEventListener("resize", computeFlags);
     window.addEventListener("orientationchange", computeFlags);
 
-    // set up autoplay retry hooks
     const cleanupAutoplay = attachAutoplayRetries();
 
     return () => {
@@ -123,23 +119,24 @@
     typeEffect();
   }
 
-  // When the full view is (re)entered and we have a video element, try autoplay.
+  // When the full view is (re)entered and we have a video element, try autoplay
   $: if (showFull && bgVideo && !videoVisible) {
     kickAutoplay();
   }
 </script>
 
 <style>
-  /* ==== your original styles (unchanged) ==== */
+  /* ==== base + fix white flash ==== */
   body, html {
     margin: 0;
     padding: 0;
     height: 100%;
     scroll-behavior: smooth;
+    background: #040e1b; /* ensure no white background shows */
   }
 
   .background-container {
-    background-image: url('untitled.png');
+    background-image: url('untitled.png'); /* Fallback image */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -148,7 +145,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    z-index: -1;
+    z-index: 0; /* was -1; keep it above body background so fallback is visible */
     overflow: hidden;
   }
 
@@ -157,12 +154,20 @@
     height: 100%;
     object-fit: cover;
     pointer-events: none; /* prevent interactions */
+    transition: opacity 250ms ease; /* nice fade-in */
   }
 
-  /* --- new: keep video out of layout until it's playing (prevents play overlay) --- */
-  .background-video.hidden { display: none !important; }
+  /* hide until actually playing; don't use display:none */
+  .background-video.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+  .background-video:not(.hidden) {
+    opacity: 1;
+    visibility: visible;
+  }
 
-  /* iOS Safari: hide the big inline play overlay button just in case */
+  /* iOS Safari: hide the big inline play overlay just in case */
   video::-webkit-media-controls-start-playback-button {
     display: none !important;
     -webkit-appearance: none;
@@ -207,9 +212,7 @@
     animation: blink 0.7s steps(1) infinite;
   }
 
-  @keyframes blink {
-    50% { border-color: transparent; }
-  }
+  @keyframes blink { 50% { border-color: transparent; } }
 
   .ending {
     position: absolute;
@@ -281,10 +284,7 @@
   .projects { top: 300%; }
   .contact { top: 425%; }
 
-  .box-container {
-    display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; align-items: flex-start;
-    width: 80%; max-width: 1200px;
-  }
+  .box-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; align-items: flex-start; width: 80%; max-width: 1200px; }
   .box {
     background-color: #1a1a2e; color: #ffffff; padding: 10px; border-radius: 10px;
     width: calc(25% - 20px); box-shadow: 0 4px 8px rgba(0,0,0,0.2);
@@ -306,19 +306,15 @@
   .box-link .box { transition: transform 0.3s ease, box-shadow 0.3s ease; }
   .box-link .box:hover { transform: translateY(-5px); box-shadow: 0 8px 16px rgba(0,0,0,0.3); }
 
-  .about {
-    display: flex; flex-direction: column; gap: 5vh; padding: 40px; text-align: left;
-    align-items: center; width: 100%; box-sizing: border-box; overflow-x: hidden;
-  }
+  .about { display: flex; flex-direction: column; gap: 5vh; padding: 40px; text-align: left; align-items: center; width: 100%; box-sizing: border-box; overflow-x: hidden; }
   .about-text { max-width: 60%; text-align: center; }
   .about-text h2 { font-size: 2vw; color: #ffcc00; margin-bottom: 20px; }
   .about-text p { font-size: 1vw; line-height: 1.6; color: #c5c5c5; }
 
   .about-boxes { display: flex; gap: 5vw; justify-content: center; width: 100%; }
   .about-boxes .box {
-    width: 25vw; background-color: #1a1a2e; height: 40vh; color: #bcbcbc; padding: 20px;
-    border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); transition: transform 0.3s ease, box-shadow 0.3s ease;
-    text-align: center; aspect-ratio: 1;
+    width: 25vw; background-color: #1a1a2e; height: 40vh; color: #bcbcbc; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease; text-align: center; aspect-ratio: 1;
   }
   .about-boxes .box:hover { transform: translateY(-5px); box-shadow: 0 8px 16px rgba(0,0,0,0.3); }
   .about-boxes .box h3 { margin-top: 0; font-size: 1.5vw; color: #ffcc00; }
@@ -327,9 +323,7 @@
 
   .education-section { display: flex; flex-direction: column; align-items: center; gap: 20px; }
   .education-section h3 { font-size: 1.8vw; color: #ffcc00; margin-bottom: 2vh; text-align: center; }
-  .education-entry {
-    display: flex; align-items: center; justify-content: center; gap: 20px; padding: 10px 0; width: 100%;
-  }
+  .education-entry { display: flex; align-items: center; justify-content: center; gap: 20px; padding: 10px 0; width: 100%; }
   .education-logo { width: 50px; height: auto; flex-shrink: 0; }
   .education-details { display: flex; flex-direction: column; align-items: center; }
   .education-details h4 { font-size: 1.3vw; color: #ffffff; margin: 0; text-align: center; }
@@ -377,7 +371,7 @@
   @media (max-width: 768px)  { .box { width: calc(50% - 20px); } }
   @media (max-width: 480px)  { .box { width: 100%; } }
 
-  /* ==== new: simplified mobile (portrait) styles ==== */
+  /* ==== simplified mobile (portrait) styles ==== */
   .mobile-notice {
     position: sticky;
     top: 0;
@@ -406,8 +400,6 @@
 </style>
 
 {#if showFull}
-  <!-- === ORIGINAL FULL EXPERIENCE === -->
-
   <!-- Capsule Navigation Bar -->
   <div class="nav-bar">
     <a href="#content">Home</a>
@@ -445,7 +437,7 @@
     <span class="ending" class:show={showEnding}>Biomedical Engineer | Data Engineer</span>
   </div>
 
-  <!-- Second section with boxes for skills, projects, interests, and contact -->
+  <!-- Second section -->
   <div id="about" class="about">
     <div class="about-text">
       <h2>About Me</h2>

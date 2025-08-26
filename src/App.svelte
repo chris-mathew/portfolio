@@ -333,9 +333,10 @@
 
   <!-- First section with full-screen background and typing effect -->
   <div class="background-container">
-    <video autoplay muted loop playsinline class="background-video">
-      <source src="background-video.mp4" type="video/mp4" />
+    <video autoplay muted loop playsinline webkit-playsinline preload="auto" class="background-video">
+    <source src="background-video.mp4" type="video/mp4" />
     </video>
+
   </div>
 
   <div id="content" class="content">

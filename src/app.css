@@ -66,6 +66,13 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+/* iOS Safari’s big inline play button */
+video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+  -webkit-appearance: none;
+}
+
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -78,3 +85,4 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+

@@ -6,15 +6,11 @@
   let displayedText = "";
   let showEnding = false;
 
-  // --- environment flags ---
+  // --- new: environment flags ---
   let isMobile = false;
   let isPortrait = false;
   let showFull = true;         // true = show your original rich version
   let mobileNotice = "";
-
-  // --- background video refs/state ---
-  let bgVideo;
-  let videoVisible = false; // only show video once it's actually playing
 
   async function typeEffect() {
     for (let i = 0; i < text.length; i++) {
@@ -37,66 +33,6 @@
       : "For the best experience, please use a desktop or rotate your device to landscape.";
   }
 
-  // wait until we get a real 'playing' event
-  function waitForPlayingOnce(videoEl) {
-    return new Promise((resolve) => {
-      const handler = () => {
-        videoEl.removeEventListener('playing', handler);
-        resolve();
-      };
-      videoEl.addEventListener('playing', handler, { once: true });
-    });
-  }
-
-  // attempt to start playback; only reveal when actually playing
-  async function kickAutoplay() {
-    if (!bgVideo) return;
-
-    // iOS needs both attribute and property variants
-    bgVideo.muted = true;
-    bgVideo.setAttribute('muted', '');
-    bgVideo.playsInline = true;
-    bgVideo.setAttribute('playsinline', '');
-    bgVideo.setAttribute('webkit-playsinline', '');
-
-    try {
-      const playingPromise = waitForPlayingOnce(bgVideo);
-      const playPromise = bgVideo.play();
-      if (playPromise) await playPromise.catch(() => {}); // ignore autoplay errors
-      await playingPromise; // only show once actually playing
-      videoVisible = true;
-    } catch {
-      videoVisible = false;
-    }
-  }
-
-  function attachAutoplayRetries() {
-    const retry = () => {
-      videoVisible = false;
-      kickAutoplay();
-    };
-
-    window.addEventListener('orientationchange', retry);
-    window.addEventListener('resize', retry);
-    document.addEventListener('visibilitychange', () => { if (!document.hidden) retry(); });
-
-    // First user gesture (covers strict devices/Low Power Mode)
-    const onFirstTouch = () => {
-      retry();
-      window.removeEventListener('touchstart', onFirstTouch, { passive: true });
-      window.removeEventListener('click', onFirstTouch, true);
-    };
-    window.addEventListener('touchstart', onFirstTouch, { passive: true });
-    window.addEventListener('click', onFirstTouch, true);
-
-    return () => {
-      window.removeEventListener('orientationchange', retry);
-      window.removeEventListener('resize', retry);
-      window.removeEventListener('touchstart', onFirstTouch, { passive: true });
-      window.removeEventListener('click', onFirstTouch, true);
-    };
-  }
-
   onMount(() => {
     document.title = "Chris's Portfolio";
     computeFlags();
@@ -105,12 +41,9 @@
     window.addEventListener("resize", computeFlags);
     window.addEventListener("orientationchange", computeFlags);
 
-    const cleanupAutoplay = attachAutoplayRetries();
-
     return () => {
       window.removeEventListener("resize", computeFlags);
       window.removeEventListener("orientationchange", computeFlags);
-      cleanupAutoplay?.();
     };
   });
 
@@ -119,24 +52,21 @@
     typeEffect();
   }
 
-  // When the full view is (re)entered and we have a video element, try autoplay
-  $: if (showFull && bgVideo && !videoVisible) {
-    kickAutoplay();
-  }
+  onMount(() => document.querySelector('video')?.play().catch(()=>{}));
+
 </script>
 
 <style>
-  /* ==== base + fix white flash ==== */
+  /* ==== your original styles (unchanged) ==== */
   body, html {
     margin: 0;
     padding: 0;
     height: 100%;
     scroll-behavior: smooth;
-    background: #040e1b; /* ensure no white background shows */
   }
 
   .background-container {
-    background-image: url('untitled.png'); /* Fallback image */
+    background-image: url('untitled.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -145,7 +75,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 0; /* was -1; keep it above body background so fallback is visible */
+    z-index: -1;
     overflow: hidden;
   }
 
@@ -153,24 +83,6 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    pointer-events: none; /* prevent interactions */
-    transition: opacity 250ms ease; /* nice fade-in */
-  }
-
-  /* hide until actually playing; don't use display:none */
-  .background-video.hidden {
-    opacity: 0;
-    visibility: hidden;
-  }
-  .background-video:not(.hidden) {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  /* iOS Safari: hide the big inline play overlay just in case */
-  video::-webkit-media-controls-start-playback-button {
-    display: none !important;
-    -webkit-appearance: none;
   }
 
   .content {
@@ -212,7 +124,9 @@
     animation: blink 0.7s steps(1) infinite;
   }
 
-  @keyframes blink { 50% { border-color: transparent; } }
+  @keyframes blink {
+    50% { border-color: transparent; }
+  }
 
   .ending {
     position: absolute;
@@ -284,7 +198,10 @@
   .projects { top: 300%; }
   .contact { top: 425%; }
 
-  .box-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; align-items: flex-start; width: 80%; max-width: 1200px; }
+  .box-container {
+    display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; align-items: flex-start;
+    width: 80%; max-width: 1200px;
+  }
   .box {
     background-color: #1a1a2e; color: #ffffff; padding: 10px; border-radius: 10px;
     width: calc(25% - 20px); box-shadow: 0 4px 8px rgba(0,0,0,0.2);
@@ -306,15 +223,19 @@
   .box-link .box { transition: transform 0.3s ease, box-shadow 0.3s ease; }
   .box-link .box:hover { transform: translateY(-5px); box-shadow: 0 8px 16px rgba(0,0,0,0.3); }
 
-  .about { display: flex; flex-direction: column; gap: 5vh; padding: 40px; text-align: left; align-items: center; width: 100%; box-sizing: border-box; overflow-x: hidden; }
+  .about {
+    display: flex; flex-direction: column; gap: 5vh; padding: 40px; text-align: left;
+    align-items: center; width: 100%; box-sizing: border-box; overflow-x: hidden;
+  }
   .about-text { max-width: 60%; text-align: center; }
   .about-text h2 { font-size: 2vw; color: #ffcc00; margin-bottom: 20px; }
   .about-text p { font-size: 1vw; line-height: 1.6; color: #c5c5c5; }
 
   .about-boxes { display: flex; gap: 5vw; justify-content: center; width: 100%; }
   .about-boxes .box {
-    width: 25vw; background-color: #1a1a2e; height: 40vh; color: #bcbcbc; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease; text-align: center; aspect-ratio: 1;
+    width: 25vw; background-color: #1a1a2e; height: 40vh; color: #bcbcbc; padding: 20px;
+    border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center; aspect-ratio: 1;
   }
   .about-boxes .box:hover { transform: translateY(-5px); box-shadow: 0 8px 16px rgba(0,0,0,0.3); }
   .about-boxes .box h3 { margin-top: 0; font-size: 1.5vw; color: #ffcc00; }
@@ -323,7 +244,9 @@
 
   .education-section { display: flex; flex-direction: column; align-items: center; gap: 20px; }
   .education-section h3 { font-size: 1.8vw; color: #ffcc00; margin-bottom: 2vh; text-align: center; }
-  .education-entry { display: flex; align-items: center; justify-content: center; gap: 20px; padding: 10px 0; width: 100%; }
+  .education-entry {
+    display: flex; align-items: center; justify-content: center; gap: 20px; padding: 10px 0; width: 100%;
+  }
   .education-logo { width: 50px; height: auto; flex-shrink: 0; }
   .education-details { display: flex; flex-direction: column; align-items: center; }
   .education-details h4 { font-size: 1.3vw; color: #ffffff; margin: 0; text-align: center; }
@@ -371,7 +294,7 @@
   @media (max-width: 768px)  { .box { width: calc(50% - 20px); } }
   @media (max-width: 480px)  { .box { width: 100%; } }
 
-  /* ==== simplified mobile (portrait) styles ==== */
+  /* ==== new: simplified mobile (portrait) styles ==== */
   .mobile-notice {
     position: sticky;
     top: 0;
@@ -400,6 +323,8 @@
 </style>
 
 {#if showFull}
+  <!-- === ORIGINAL FULL EXPERIENCE (unchanged) === -->
+
   <!-- Capsule Navigation Bar -->
   <div class="nav-bar">
     <a href="#content">Home</a>
@@ -411,22 +336,10 @@
 
   <!-- First section with full-screen background and typing effect -->
   <div class="background-container">
-    <video
-      bind:this={bgVideo}
-      class="background-video {videoVisible ? '' : 'hidden'}"
-      autoplay
-      muted
-      loop
-      playsinline
-      webkit-playsinline
-      preload="auto"
-      x-webkit-airplay="deny"
-      disablepictureinpicture
-      controlslist="nodownload noplaybackrate nofullscreen noremoteplayback"
-      poster="untitled.png"
-    >
-      <source src="background-video.mp4" type="video/mp4" />
+    <video autoplay muted loop playsinline webkit-playsinline preload="auto" class="background-video">
+    <source src="background-video.mp4" type="video/mp4" />
     </video>
+
   </div>
 
   <div id="content" class="content">
@@ -437,7 +350,7 @@
     <span class="ending" class:show={showEnding}>Biomedical Engineer | Data Engineer</span>
   </div>
 
-  <!-- Second section -->
+  <!-- Second section with boxes for skills, projects, interests, and contact -->
   <div id="about" class="about">
     <div class="about-text">
       <h2>About Me</h2>

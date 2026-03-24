@@ -398,7 +398,6 @@
     <div class="experience-title">
       <h2>Experience</h2>
     </div>
-    <div class="experience-boxes">
       
       <div class="experience-box">
         <h3>Machine Learning Research Engineer</h3>
@@ -430,7 +429,6 @@
           <li>• Programmed an API for Data Scientists to automate SQL tasks, increasing efficiency</li>
         </ul>
       </div>
-    </div>
   </div>
 
   <div id="projects" class="projects">
